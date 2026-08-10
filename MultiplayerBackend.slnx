@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MultiplayerBackend.Api.Tests/MultiplayerBackend.Api.Tests.csproj" />
+  <Project Path="MultiplayerBackend.Api/MultiplayerBackend.Api.csproj" />
+</Solution>

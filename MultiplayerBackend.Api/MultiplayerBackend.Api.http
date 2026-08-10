@@ -1,0 +1,145 @@
+@host = http://localhost:5035
+
+###############################################################################
+# Players
+###############################################################################
+
+### Create Sett
+POST {{host}}/api/players
+Content-Type: application/json
+
+{
+  "name": "Sett",
+  "level": 51
+}
+
+### Create Alice
+POST {{host}}/api/players
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "level": 20
+}
+
+### Get all players
+GET {{host}}/api/players
+
+### Get Sett
+GET {{host}}/api/players/1
+
+### Update Sett
+PUT {{host}}/api/players/1
+Content-Type: application/json
+
+{
+  "name": "Sett",
+  "level": 52
+}
+
+###############################################################################
+# Inventory
+###############################################################################
+
+### Give Sett 5 Iron Swords
+POST {{host}}/api/players/1/inventory
+Content-Type: application/json
+
+{
+  "itemName": "Iron Sword",
+  "amount": 5
+}
+
+### Give Sett another 2 Iron Swords
+# Should stack with the existing row -> amount becomes 7.
+POST {{host}}/api/players/1/inventory
+Content-Type: application/json
+
+{
+  "itemName": "Iron Sword",
+  "amount": 2
+}
+
+### Give Sett 10 Health Potions
+POST {{host}}/api/players/1/inventory
+Content-Type: application/json
+
+{
+  "itemName": "Health Potion",
+  "amount": 10
+}
+
+### Get Sett inventory
+GET {{host}}/api/players/1/inventory
+
+### Get Alice inventory
+GET {{host}}/api/players/2/inventory
+
+###############################################################################
+# Transfer
+###############################################################################
+
+### Transfer 3 Iron Swords from Sett to Alice
+#
+# On a freshly reset database:
+# Player 1 = Sett
+# Player 2 = Alice
+# Inventory item 1 = Iron Sword
+#
+POST {{host}}/api/players/1/inventory/1/transfer
+Content-Type: application/json
+
+{
+  "targetPlayerId": 2,
+  "amount": 3
+}
+
+### Check Sett after transfer
+GET {{host}}/api/players/1/inventory
+
+### Check Alice after transfer
+GET {{host}}/api/players/2/inventory
+
+###############################################################################
+# Delete
+###############################################################################
+
+### Delete Alice
+# Because the FK uses ON DELETE CASCADE,
+# Alice's inventory rows are deleted too.
+DELETE {{host}}/api/players/2
+
+### Verify players
+GET {{host}}/api/players
+
+###############################################################################
+# Authentication
+###############################################################################
+
+### Register account
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "sett",
+  "password": "test-password-123",
+  "playerName": "Sett"
+}
+
+### Login - correct password
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "sett",
+  "password": "test-password-123"
+}
+
+### Login - wrong password
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "sett",
+  "password": "wrong-password"
+}
