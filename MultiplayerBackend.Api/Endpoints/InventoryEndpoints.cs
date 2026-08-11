@@ -1,8 +1,11 @@
-﻿using MultiplayerBackend.Api.Data;
+﻿using System.Security.Claims;
+using System.Security.Claims;
+using MultiplayerBackend.Api.Data;
 using MultiplayerBackend.Api.DTOs;
 using MultiplayerBackend.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using MultiplayerBackend.Api.Services;
+using MultiplayerBackend.Api.Extensions;
 
 namespace MultiplayerBackend.Api.Endpoints;
 
@@ -10,7 +13,9 @@ public static class InventoryEndpoints
 {
     public static void MapInventoryEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/api/players/{playerId:int}/inventory");
+        var group = app
+            .MapGroup("/api/players/me/inventory")
+            .RequireAuthorization();
 
         group.MapGet("/", GetInventory);
         group.MapPost("/", AddItem);
@@ -18,15 +23,14 @@ public static class InventoryEndpoints
     }
 
     private static async Task<IResult> GetInventory(
-        int playerId,
+        ClaimsPrincipal user,
         AppDbContext db)
     {
-        var playerExists = await db.Players
-            .AnyAsync(player => player.Id == playerId);
+        var playerId = user.GetPlayerId();
 
-        if (!playerExists)
+        if (playerId is null)
         {
-            return Results.NotFound("Player not found.");
+            return Results.Unauthorized();
         }
 
         var items = await db.InventoryItems
@@ -42,10 +46,17 @@ public static class InventoryEndpoints
     }
 
     private static async Task<IResult> AddItem(
-        int playerId,
         AddInventoryItemRequest request,
+        ClaimsPrincipal user,
         AppDbContext db)
     {
+        var playerId = user.GetPlayerId();
+
+        if (playerId is null)
+        {
+            return Results.Unauthorized();
+        }
+        
         if (string.IsNullOrWhiteSpace(request.ItemName))
         {
             return Results.BadRequest("Item name is required.");
@@ -74,7 +85,7 @@ public static class InventoryEndpoints
         {
             item = new InventoryItem
             {
-                PlayerId = playerId,
+                PlayerId = playerId.Value,
                 ItemName = request.ItemName,
                 Amount = request.Amount
             };
@@ -96,13 +107,20 @@ public static class InventoryEndpoints
     }
 
     private static async Task<IResult> TransferItem(
-        int playerId,
         int itemId,
         TransferItemRequest request,
+        ClaimsPrincipal user,
         InventoryService inventoryService)
     {
+        var playerId = user.GetPlayerId();
+
+        if (playerId is null)
+        {
+            return Results.Unauthorized();
+        }
+
         var result = await inventoryService.TransferItemAsync(
-            playerId,
+            playerId.Value,
             itemId,
             request.TargetPlayerId,
             request.Amount);

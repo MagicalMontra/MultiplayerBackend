@@ -10,13 +10,16 @@ public class AuthService
 {
     private readonly AppDbContext _db;
     private readonly IPasswordHasher<Account> _passwordHasher;
+    private readonly TokenService _tokenService;
 
     public AuthService(
         AppDbContext db,
-        IPasswordHasher<Account> passwordHasher)
+        IPasswordHasher<Account> passwordHasher,
+        TokenService tokenService)
     {
         _db = db;
         _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
     }
 
     public async Task<RegisterResponse?> RegisterAsync(
@@ -84,9 +87,14 @@ public class AuthService
             return null;
         }
 
+        var accessToken =
+            _tokenService.CreateAccessToken(account);
+
         return new LoginResponse(
             account.Id,
             account.PlayerId,
-            account.Username);
+            account.Username,
+            accessToken.Token,
+            accessToken.ExpiresAtUtc);
     }
 }

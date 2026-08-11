@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Claims;
 using MultiplayerBackend.Api.Data;
 using MultiplayerBackend.Api.DTOs;
 using MultiplayerBackend.Api.Models;
+using Microsoft.EntityFrameworkCore;
+using MultiplayerBackend.Api.Extensions;
 
 namespace MultiplayerBackend.Api.Endpoints;
 
@@ -11,11 +13,17 @@ public static class PlayerEndpoints
     {
         var group = app.MapGroup("/api/players");
 
+        // Temporary dev endpoints
         group.MapGet("/", GetAll);
-        group.MapGet("/{id:int}", GetById);
         group.MapPost("/", Create);
-        group.MapPut("/{id:int}", Update);
         group.MapDelete("/{id:int}", Delete);
+
+        // Player-facing endpoints
+        group.MapGet("/me", GetMe)
+            .RequireAuthorization();
+
+        group.MapPut("/me", UpdateMe)
+            .RequireAuthorization();
     }
 
     private static async Task<IResult> GetAll(AppDbContext db)
@@ -30,12 +38,19 @@ public static class PlayerEndpoints
         return Results.Ok(players);
     }
 
-    private static async Task<IResult> GetById(
-        int id,
+    private static async Task<IResult> GetMe(
+        ClaimsPrincipal user,
         AppDbContext db)
     {
+        var playerId = user.GetPlayerId();
+
+        if (playerId is null)
+        {
+            return Results.Unauthorized();
+        }
+
         var player = await db.Players
-            .Where(player => player.Id == id)
+            .Where(player => player.Id == playerId.Value)
             .Select(player => new PlayerResponse(
                 player.Id,
                 player.Name,
@@ -81,11 +96,18 @@ public static class PlayerEndpoints
             response);
     }
 
-    private static async Task<IResult> Update(
-        int id,
+    private static async Task<IResult> UpdateMe(
         UpdatePlayerRequest request,
+        ClaimsPrincipal user,
         AppDbContext db)
     {
+        var playerId = user.GetPlayerId();
+
+        if (playerId is null)
+        {
+            return Results.Unauthorized();
+        }
+
         if (string.IsNullOrWhiteSpace(request.Name))
         {
             return Results.BadRequest("Name is required.");
@@ -93,10 +115,11 @@ public static class PlayerEndpoints
 
         if (request.Level < 0)
         {
-            return Results.BadRequest("Level cannot be negative.");
+            return Results.BadRequest(
+                "Level cannot be negative.");
         }
 
-        var player = await db.Players.FindAsync(id);
+        var player = await db.Players.FindAsync(playerId.Value);
 
         if (player is null)
         {

@@ -21,5 +21,7 @@ public record LoginRequest(
 public record LoginResponse(
     int AccountId,
     int PlayerId,
-    string Username
+    string Username,
+    string AccessToken,
+    DateTime ExpiresAtUtc
 );
