@@ -1,0 +1,79 @@
+﻿services:
+  api:
+    build:
+      context: .
+      dockerfile: MultiplayerBackend.Api/Dockerfile
+
+    container_name: multiplayer-api
+
+    ports:
+      - "5035:8080"
+
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Development
+    
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=multiplayer;Username=postgres;Password=${POSTGRES_PASSWORD};GSS Encryption Mode=Disable
+      ConnectionStrings__Redis: redis:6379
+    
+      Jwt__Issuer: MultiplayerBackend.Api
+      Jwt__Audience: MultiplayerBackend.Client
+      Jwt__ExpirationMinutes: 60
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?JWT_SIGNING_KEY is required}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:18
+    container_name: multiplayer-postgres
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: multiplayer
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U postgres -d multiplayer"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:8.8
+    container_name: multiplayer-redis
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "ping"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -3,9 +3,11 @@ using MultiplayerBackend.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using MultiplayerBackend.Api.Models;
 using Microsoft.AspNetCore.Identity;
+using MultiplayerBackend.Api.Health;
 using Microsoft.IdentityModel.Tokens;
 using MultiplayerBackend.Api.Services;
 using MultiplayerBackend.Api.Endpoints;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,11 +78,37 @@ var redisConnectionString =
         "Redis connection string is not configured.");
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
-    ConnectionMultiplexer.Connect(redisConnectionString));
+{
+    var options =
+        ConfigurationOptions.Parse(redisConnectionString);
+
+    options.AbortOnConnectFail = false;
+
+    return ConnectionMultiplexer.Connect(options);
+});
 
 builder.Services.AddSingleton<LoginQueueService>();
 
+builder.Services
+    .AddHealthChecks()
+    .AddDbContextCheck<AppDbContext>(
+        name: "postgresql",
+        tags: ["ready"])
+    .AddCheck<RedisHealthCheck>(
+        name: "redis",
+        tags: ["ready"]);
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+
+    var db = scope.ServiceProvider
+        .GetRequiredService<AppDbContext>();
+
+    await db.Database.MigrateAsync();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -94,6 +122,21 @@ app.MapPlayerEndpoints();
 app.MapInventoryEndpoints();
 app.MapAuthEndpoints();
 app.MapLoginQueueEndpoints();
+
+app.MapHealthChecks(
+    "/health/live",
+    new HealthCheckOptions
+    {
+        Predicate = _ => false
+    });
+
+app.MapHealthChecks(
+    "/health/ready",
+    new HealthCheckOptions
+    {
+        Predicate = check =>
+            check.Tags.Contains("ready")
+    });
 
 app.Run();
 

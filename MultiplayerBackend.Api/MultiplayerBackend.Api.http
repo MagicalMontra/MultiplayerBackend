@@ -2,6 +2,15 @@
 @settToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiYWNjb3VudElkIjoiMSIsInBsYXllcklkIjoiMSIsInVuaXF1ZV9uYW1lIjoic2V0dCIsImp0aSI6IjZiNDJkM2UzLTJmNjItNGZlNy04OTBkLTAyNzNlZGIwNjhmMiIsIm5iZiI6MTc4NjUyOTU0NCwiZXhwIjoxNzg2NTMzMTQ0LCJpc3MiOiJNdWx0aXBsYXllckJhY2tlbmQuQXBpIiwiYXVkIjoiTXVsdGlwbGF5ZXJCYWNrZW5kLkNsaWVudCJ9.Tq_ZqQ8DLGemNxiUjXj8BWgg8HaDXrl268r4lioZq08
 @aliceToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiYWNjb3VudElkIjoiMiIsInBsYXllcklkIjoiMiIsInVuaXF1ZV9uYW1lIjoiYWxpY2UiLCJqdGkiOiI1NGZmYmE0ZC0zMTYzLTQxZGItYTFkMS1kYTFmOTgyNGI4NTkiLCJuYmYiOjE3ODY1Mjk3NjYsImV4cCI6MTc4NjUzMzM2NiwiaXNzIjoiTXVsdGlwbGF5ZXJCYWNrZW5kLkFwaSIsImF1ZCI6Ik11bHRpcGxheWVyQmFja2VuZC5DbGllbnQifQ.JtBjhUPmazjr08pRmDrqtnSdojklbV-tJ0VsWDkyvXY
 
+### Health Check
+GET {{host}}/health
+
+### Liveness
+GET {{host}}/health/live
+
+### Readiness
+GET {{host}}/health/ready
+
 ###############################################################################
 # Authentication
 ###############################################################################
