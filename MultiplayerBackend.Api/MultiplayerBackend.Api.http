@@ -1,17 +1,79 @@
 @host = http://localhost:5035
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicGxheWVySWQiOiIxIiwidW5pcXVlX25hbWUiOiJzZXR0IiwianRpIjoiNmJkNWFiNDAtYmZiMi00ODU0LWE0MjAtNTYxYmFiYTk1NGZjIiwibmJmIjoxNzg2NDc4MzIxLCJleHAiOjE3ODY0ODE5MjEsImlzcyI6Ik11bHRpcGxheWVyQmFja2VuZC5BcGkiLCJhdWQiOiJNdWx0aXBsYXllckJhY2tlbmQuQ2xpZW50In0.HuTbqhJwzDz_We0NjIQ3dtsCtYdEFXPVOHtSev9zjsU
-#@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwicGxheWVySWQiOiIyIiwidW5pcXVlX25hbWUiOiJhbGljZSIsImp0aSI6ImU5N2E3MzE2LTQ1ZTAtNDdmNS1hZjRjLTg3YzAwN2JmZWVmYiIsIm5iZiI6MTc4NjQ4MTE5OSwiZXhwIjoxNzg2NDg0Nzk5LCJpc3MiOiJNdWx0aXBsYXllckJhY2tlbmQuQXBpIiwiYXVkIjoiTXVsdGlwbGF5ZXJCYWNrZW5kLkNsaWVudCJ9.ovB4ETpSzJuX-IjRUQ9ES-X2nUERNAK2gyKcVvQtas4
+@settToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiYWNjb3VudElkIjoiMSIsInBsYXllcklkIjoiMSIsInVuaXF1ZV9uYW1lIjoic2V0dCIsImp0aSI6IjZiNDJkM2UzLTJmNjItNGZlNy04OTBkLTAyNzNlZGIwNjhmMiIsIm5iZiI6MTc4NjUyOTU0NCwiZXhwIjoxNzg2NTMzMTQ0LCJpc3MiOiJNdWx0aXBsYXllckJhY2tlbmQuQXBpIiwiYXVkIjoiTXVsdGlwbGF5ZXJCYWNrZW5kLkNsaWVudCJ9.Tq_ZqQ8DLGemNxiUjXj8BWgg8HaDXrl268r4lioZq08
+@aliceToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiYWNjb3VudElkIjoiMiIsInBsYXllcklkIjoiMiIsInVuaXF1ZV9uYW1lIjoiYWxpY2UiLCJqdGkiOiI1NGZmYmE0ZC0zMTYzLTQxZGItYTFkMS1kYTFmOTgyNGI4NTkiLCJuYmYiOjE3ODY1Mjk3NjYsImV4cCI6MTc4NjUzMzM2NiwiaXNzIjoiTXVsdGlwbGF5ZXJCYWNrZW5kLkFwaSIsImF1ZCI6Ik11bHRpcGxheWVyQmFja2VuZC5DbGllbnQifQ.JtBjhUPmazjr08pRmDrqtnSdojklbV-tJ0VsWDkyvXY
+
+###############################################################################
+# Authentication
+###############################################################################
+
+### Register account
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "sett",
+  "password": "test-password-123",
+  "playerName": "Sett"
+}
+
+### Login - correct password
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "sett",
+  "password": "test-password-123"
+}
+
+### Login - wrong password
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "sett",
+  "password": "wrong-password"
+}
+
+### Login Alice - correct password
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "test-password-123"
+}
+
+### Join login queue
+POST {{host}}/api/login-queue/join
+Authorization: Bearer {{settToken}}
+
+### Alice joins queue
+POST {{host}}/api/login-queue/join
+Authorization: Bearer {{aliceToken}}
+
+### Queue status Sett
+GET {{host}}/api/login-queue/status
+Authorization: Bearer {{settToken}}
+
+### Queue status Alice
+GET {{host}}/api/login-queue/status
+Authorization: Bearer {{aliceToken}}
+
+### Leave queue Sett
+DELETE {{host}}/api/login-queue/leave
+Authorization: Bearer {{settToken}}
+
 ### My profile
 GET {{host}}/api/players/me
-Authorization: Bearer {{token}}
+Authorization: Bearer {{settToken}}
 
 ### My inventory
 GET {{host}}/api/players/me/inventory
-Authorization: Bearer {{token}}
+Authorization: Bearer {{settToken}}
 
 ### Add item to my inventory
 POST {{host}}/api/players/me/inventory
-Authorization: Bearer {{token}}
+Authorization: Bearer {{settToken}}
 Content-Type: application/json
 
 {

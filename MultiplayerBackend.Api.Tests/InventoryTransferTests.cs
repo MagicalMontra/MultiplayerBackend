@@ -1,134 +1,181 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using MultiplayerBackend.Api.Data;
 using MultiplayerBackend.Api.DTOs;
-using Testcontainers.PostgreSql;
+using MultiplayerBackend.Api.Tests.Infrastructure;
 
 namespace MultiplayerBackend.Api.Tests;
 
-public class InventoryTransferTests : IAsyncLifetime
+[Collection("ApiIntegration")]
+public class InventoryTransferTests
 {
-    private readonly PostgreSqlContainer _postgres =
-        new PostgreSqlBuilder("postgres:18")
-            .WithDatabase("multiplayer_test")
-            .WithUsername("postgres")
-            .WithPassword("testpassword")
-            .Build();
+    private readonly ApiIntegrationTestFixture _fixture;
 
-    private WebApplicationFactory<Program>? _factory;
-    private HttpClient? _client;
-
-    public async Task InitializeAsync()
+    public InventoryTransferTests(
+        ApiIntegrationTestFixture fixture)
     {
-        await _postgres.StartAsync();
-
-        _factory = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureServices(services =>
-                {
-                    var descriptor = services.SingleOrDefault(
-                        service =>
-                            service.ServiceType ==
-                            typeof(DbContextOptions<AppDbContext>));
-
-                    if (descriptor is not null)
-                    {
-                        services.Remove(descriptor);
-                    }
-
-                    services.AddDbContext<AppDbContext>(options =>
-                        options.UseNpgsql(
-                            _postgres.GetConnectionString()));
-                });
-            });
-
-        using var scope = _factory.Services.CreateScope();
-
-        var db = scope.ServiceProvider
-            .GetRequiredService<AppDbContext>();
-
-        await db.Database.MigrateAsync();
-
-        _client = _factory.CreateClient();
-    }
-
-    public async Task DisposeAsync()
-    {
-        _client?.Dispose();
-
-        if (_factory is not null)
-        {
-            await _factory.DisposeAsync();
-        }
-
-        await _postgres.DisposeAsync();
+        _fixture = fixture;
     }
 
     [Fact]
-    public async Task TransferItem_MovesItemsBetweenPlayers()
+    public async Task TransferItem_MovesItemsBetweenAuthenticatedPlayers()
     {
-        // Arrange
+        await _fixture.ResetAsync();
 
-        var settResponse = await _client!.PostAsJsonAsync(
-            "/api/players",
-            new CreatePlayerRequest("Sett", 51));
-
-        settResponse.EnsureSuccessStatusCode();
-
-        var sett = await settResponse.Content
-            .ReadFromJsonAsync<PlayerResponse>();
-
-        var aliceResponse = await _client.PostAsJsonAsync(
-            "/api/players",
-            new CreatePlayerRequest("Alice", 20));
-
-        aliceResponse.EnsureSuccessStatusCode();
-
-        var alice = await aliceResponse.Content
-            .ReadFromJsonAsync<PlayerResponse>();
-
-        var itemResponse = await _client.PostAsJsonAsync(
-            $"/api/players/{sett!.Id}/inventory",
+        using var client = _fixture.CreateClient();
+        
+        // -------------------------------------------------------------------------
+        // Arrange: register Sett
+        // -------------------------------------------------------------------------
+    
+        var settRegisterResponse = await client!.PostAsJsonAsync(
+            "/api/auth/register",
+            new RegisterRequest(
+                "sett",
+                "test-password-123",
+                "Sett"));
+    
+        settRegisterResponse.EnsureSuccessStatusCode();
+    
+        var settRegistration =
+            await settRegisterResponse.Content
+                .ReadFromJsonAsync<RegisterResponse>();
+    
+        Assert.NotNull(settRegistration);
+    
+        // -------------------------------------------------------------------------
+        // Arrange: register Alice
+        // -------------------------------------------------------------------------
+    
+        var aliceRegisterResponse = await client.PostAsJsonAsync(
+            "/api/auth/register",
+            new RegisterRequest(
+                "alice",
+                "test-password-456",
+                "Alice"));
+    
+        aliceRegisterResponse.EnsureSuccessStatusCode();
+    
+        var aliceRegistration =
+            await aliceRegisterResponse.Content
+                .ReadFromJsonAsync<RegisterResponse>();
+    
+        Assert.NotNull(aliceRegistration);
+    
+        // -------------------------------------------------------------------------
+        // Login as Sett
+        // -------------------------------------------------------------------------
+    
+        var settLoginResponse = await client.PostAsJsonAsync(
+            "/api/auth/login",
+            new LoginRequest(
+                "sett",
+                "test-password-123"));
+    
+        settLoginResponse.EnsureSuccessStatusCode();
+    
+        var settLogin =
+            await settLoginResponse.Content
+                .ReadFromJsonAsync<LoginResponse>();
+    
+        Assert.NotNull(settLogin);
+        Assert.False(string.IsNullOrWhiteSpace(settLogin.AccessToken));
+    
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                settLogin.AccessToken);
+    
+        // -------------------------------------------------------------------------
+        // Give Sett 10 Health Potions
+        // -------------------------------------------------------------------------
+    
+        var itemResponse = await client.PostAsJsonAsync(
+            "/api/players/me/inventory",
             new AddInventoryItemRequest(
                 "Health Potion",
                 10));
-
+    
         itemResponse.EnsureSuccessStatusCode();
-
-        var item = await itemResponse.Content
-            .ReadFromJsonAsync<InventoryItemResponse>();
-
-        // Act
-
-        var transferResponse = await _client.PostAsJsonAsync(
-            $"/api/players/{sett.Id}/inventory/{item!.Id}/transfer",
+    
+        var item =
+            await itemResponse.Content
+                .ReadFromJsonAsync<InventoryItemResponse>();
+    
+        Assert.NotNull(item);
+    
+        // -------------------------------------------------------------------------
+        // Act: transfer 3 to Alice
+        // -------------------------------------------------------------------------
+    
+        var transferResponse = await client.PostAsJsonAsync(
+            $"/api/players/me/inventory/{item.Id}/transfer",
             new TransferItemRequest(
-                alice!.Id,
+                aliceRegistration.PlayerId,
                 3));
-
-        // Assert
-
+    
+        // -------------------------------------------------------------------------
+        // Assert transfer succeeded
+        // -------------------------------------------------------------------------
+    
         Assert.Equal(
             HttpStatusCode.NoContent,
             transferResponse.StatusCode);
-
+    
+        // Verify Sett now has 7
         var settInventory =
-            await _client.GetFromJsonAsync<List<InventoryItemResponse>>(
-                $"/api/players/{sett.Id}/inventory");
-
-        var aliceInventory =
-            await _client.GetFromJsonAsync<List<InventoryItemResponse>>(
-                $"/api/players/{alice.Id}/inventory");
-
-        Assert.Single(settInventory!);
+            await client.GetFromJsonAsync<List<InventoryItemResponse>>(
+                "/api/players/me/inventory");
+    
+        Assert.NotNull(settInventory);
+        Assert.Single(settInventory);
         Assert.Equal(7, settInventory[0].Amount);
-
-        Assert.Single(aliceInventory!);
+    
+        // -------------------------------------------------------------------------
+        // Login as Alice
+        // -------------------------------------------------------------------------
+    
+        var aliceLoginResponse = await client.PostAsJsonAsync(
+            "/api/auth/login",
+            new LoginRequest(
+                "alice",
+                "test-password-456"));
+    
+        aliceLoginResponse.EnsureSuccessStatusCode();
+    
+        var aliceLogin =
+            await aliceLoginResponse.Content
+                .ReadFromJsonAsync<LoginResponse>();
+    
+        Assert.NotNull(aliceLogin);
+    
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                aliceLogin.AccessToken);
+    
+        // Verify Alice received 3
+        var aliceInventory =
+            await client.GetFromJsonAsync<List<InventoryItemResponse>>(
+                "/api/players/me/inventory");
+    
+        Assert.NotNull(aliceInventory);
+        Assert.Single(aliceInventory);
         Assert.Equal(3, aliceInventory[0].Amount);
+    }
+    
+    [Fact]
+    public async Task GetInventory_WithoutToken_ReturnsUnauthorized()
+    {
+        await _fixture.ResetAsync();
+
+        using var client = _fixture.CreateClient();
+
+        var response = await client.GetAsync(
+            "/api/players/me/inventory");
+
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
     }
 }

@@ -1,3 +1,4 @@
+using StackExchange.Redis;
 using MultiplayerBackend.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using MultiplayerBackend.Api.Models;
@@ -61,6 +62,24 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration =
+        builder.Configuration.GetConnectionString("Redis");
+
+    options.InstanceName = "MultiplayerBackend:";
+});
+
+var redisConnectionString =
+    builder.Configuration.GetConnectionString("Redis")
+    ?? throw new InvalidOperationException(
+        "Redis connection string is not configured.");
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
+    ConnectionMultiplexer.Connect(redisConnectionString));
+
+builder.Services.AddSingleton<LoginQueueService>();
+
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -74,6 +93,7 @@ if (app.Environment.IsDevelopment())
 app.MapPlayerEndpoints();
 app.MapInventoryEndpoints();
 app.MapAuthEndpoints();
+app.MapLoginQueueEndpoints();
 
 app.Run();
 

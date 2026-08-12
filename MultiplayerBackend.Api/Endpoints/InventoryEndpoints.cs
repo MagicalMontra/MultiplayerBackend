@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using System.Security.Claims;
 using MultiplayerBackend.Api.Data;
 using MultiplayerBackend.Api.DTOs;
 using MultiplayerBackend.Api.Models;

@@ -1,9 +1,11 @@
-﻿using System.Security.Claims;
+﻿using System.Text.Json;
+using System.Security.Claims;
 using MultiplayerBackend.Api.Data;
 using MultiplayerBackend.Api.DTOs;
 using MultiplayerBackend.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using MultiplayerBackend.Api.Extensions;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace MultiplayerBackend.Api.Endpoints;
 
@@ -40,7 +42,8 @@ public static class PlayerEndpoints
 
     private static async Task<IResult> GetMe(
         ClaimsPrincipal user,
-        AppDbContext db)
+        AppDbContext db,
+        IDistributedCache cache)
     {
         var playerId = user.GetPlayerId();
 
@@ -49,6 +52,24 @@ public static class PlayerEndpoints
             return Results.Unauthorized();
         }
 
+        var cacheKey = $"player:{playerId.Value}";
+
+        // 1. Try Redis first
+        var cachedPlayer = await cache.GetStringAsync(cacheKey);
+
+        if (cachedPlayer is not null)
+        {
+            Console.WriteLine("CACHE HIT");
+
+            var response =
+                JsonSerializer.Deserialize<PlayerResponse>(cachedPlayer);
+
+            return Results.Ok(response);
+        }
+
+        Console.WriteLine("CACHE MISS");
+
+        // 2. Redis didn't have it, query PostgreSQL
         var player = await db.Players
             .Where(player => player.Id == playerId.Value)
             .Select(player => new PlayerResponse(
@@ -57,9 +78,24 @@ public static class PlayerEndpoints
                 player.Level))
             .FirstOrDefaultAsync();
 
-        return player is null
-            ? Results.NotFound()
-            : Results.Ok(player);
+        if (player is null)
+        {
+            return Results.NotFound();
+        }
+
+        // 3. Store result in Redis
+        var json = JsonSerializer.Serialize(player);
+
+        await cache.SetStringAsync(
+            cacheKey,
+            json,
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow =
+                    TimeSpan.FromMinutes(5)
+            });
+
+        return Results.Ok(player);
     }
 
     private static async Task<IResult> Create(

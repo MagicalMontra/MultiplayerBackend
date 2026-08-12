@@ -52,6 +52,10 @@ public class TokenService
                 account.Id.ToString()),
 
             new Claim(
+                "accountId",
+                account.Id.ToString()),
+
+            new Claim(
                 "playerId",
                 account.PlayerId.ToString()),
 
