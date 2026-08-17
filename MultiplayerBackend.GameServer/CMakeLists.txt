@@ -18,8 +18,24 @@ add_executable(
 
         src/server/ClientConnection.cpp
         src/server/GameServer.cpp
-        src/simulation/SimulationStep.cpp
         src/simulation/SimulationStep.h
+        src/simulation/StateHistory.h
+        src/simulation/WorldState.h
+        src/simulation/MovementInput.h
+        src/simulation/WorldSimulation.cpp
+        src/simulation/WorldSimulation.h
+        src/simulation/EntityId.h
+        src/simulation/Vec2.h
+        src/simulation/MoveDirection.h
+        src/simulation/PlayerState.h
+        src/simulation/CellCoord.h
+        src/simulation/SpatialGrid.h
+        src/simulation/SpatialGrid.cpp
+        src/simulation/SimulationEvent.h
+        src/simulation/EntityStore.h
+        src/simulation/GridAddress.h
+        src/replication/InterestTracker.h
+        src/replication/InterestTracker.cpp
 )
 
 target_compile_features(

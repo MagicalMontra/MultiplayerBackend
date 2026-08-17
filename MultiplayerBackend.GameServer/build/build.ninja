@@ -55,8 +55,78 @@ build CMakeFiles/multiplayer_game_server.dir/src/main.cpp.o: CXX_COMPILER__multi
   FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
   OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
   OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src
-  TARGET_COMPILE_PDB = CMakeFiles/multiplayer_game_server.dir/
-  TARGET_PDB = multiplayer_game_server.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/net/UniqueFd.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/net/UniqueFd.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/net/UniqueFd.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/net
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/net/tcp/TcpSocket.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/net/tcp/TcpSocket.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/net/tcp/TcpSocket.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/net/tcp
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/protocol/PacketCodec.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/protocol/PacketCodec.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/protocol/PacketCodec.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/protocol
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/protocol/PacketDecoder.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/protocol/PacketDecoder.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/protocol/PacketDecoder.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/protocol
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/server/ClientConnection.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/server/ClientConnection.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/server/ClientConnection.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/server
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/server/GameServer.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/server/GameServer.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/server/GameServer.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/server
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/simulation/WorldSimulation.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/simulation/WorldSimulation.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/simulation/WorldSimulation.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/simulation
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/simulation/SpatialGrid.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/simulation/SpatialGrid.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/simulation/SpatialGrid.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/simulation
+  TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
+
+build CMakeFiles/multiplayer_game_server.dir/src/replication/InterestTracker.cpp.o: CXX_COMPILER__multiplayer_game_server_unscanned_Debug /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/src/replication/InterestTracker.cpp || cmake_object_order_depends_target_multiplayer_game_server
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/multiplayer_game_server.dir/src/replication/InterestTracker.cpp.o.d
+  FLAGS = -g -std=gnu++20 -Wall -Wextra -Wpedantic
+  OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
+  OBJECT_FILE_DIR = CMakeFiles/multiplayer_game_server.dir/src/replication
   TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
 
 
@@ -67,7 +137,7 @@ build CMakeFiles/multiplayer_game_server.dir/src/main.cpp.o: CXX_COMPILER__multi
 #############################################
 # Link the executable multiplayer_game_server
 
-build multiplayer_game_server: CXX_EXECUTABLE_LINKER__multiplayer_game_server_Debug CMakeFiles/multiplayer_game_server.dir/src/main.cpp.o
+build multiplayer_game_server: CXX_EXECUTABLE_LINKER__multiplayer_game_server_Debug CMakeFiles/multiplayer_game_server.dir/src/main.cpp.o CMakeFiles/multiplayer_game_server.dir/src/net/UniqueFd.cpp.o CMakeFiles/multiplayer_game_server.dir/src/net/tcp/TcpSocket.cpp.o CMakeFiles/multiplayer_game_server.dir/src/protocol/PacketCodec.cpp.o CMakeFiles/multiplayer_game_server.dir/src/protocol/PacketDecoder.cpp.o CMakeFiles/multiplayer_game_server.dir/src/server/ClientConnection.cpp.o CMakeFiles/multiplayer_game_server.dir/src/server/GameServer.cpp.o CMakeFiles/multiplayer_game_server.dir/src/simulation/WorldSimulation.cpp.o CMakeFiles/multiplayer_game_server.dir/src/simulation/SpatialGrid.cpp.o CMakeFiles/multiplayer_game_server.dir/src/replication/InterestTracker.cpp.o
   CONFIG = Debug
   DEP_FILE = CMakeFiles/multiplayer_game_server.dir/link.d
   FLAGS = -g
@@ -75,9 +145,8 @@ build multiplayer_game_server: CXX_EXECUTABLE_LINKER__multiplayer_game_server_De
   OBJECT_DIR = CMakeFiles/multiplayer_game_server.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/multiplayer_game_server.dir/
   TARGET_FILE = multiplayer_game_server
-  TARGET_PDB = multiplayer_game_server.pdb
+  TARGET_PDB = multiplayer_game_server.dbg
   TARGET_SUPPORT_DIR = CMakeFiles/multiplayer_game_server.dir
 
 
@@ -123,14 +192,14 @@ build all: phony multiplayer_game_server
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/build/cmake_install.cmake: RERUN_CMAKE | /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/CMakeLists.txt /usr/share/cmake-4.2/Modules/CMakeCXXCompiler.cmake.in /usr/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeCompilerIdDetection.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompiler.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompilerSupport.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake /usr/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeNinjaFindMake.cmake /usr/share/cmake-4.2/Modules/CMakeParseImplicitIncludeInfo.cmake /usr/share/cmake-4.2/Modules/CMakeParseImplicitLinkInfo.cmake /usr/share/cmake-4.2/Modules/CMakeParseLibraryArchitecture.cmake /usr/share/cmake-4.2/Modules/CMakeSystem.cmake.in /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake /usr/share/cmake-4.2/Modules/CMakeTestCompilerCommon.cmake /usr/share/cmake-4.2/Modules/Compiler/ADSP-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/ARMCC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/ARMClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/AppleClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Borland-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/Clang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /usr/share/cmake-4.2/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Cray-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/CrayClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Diab-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/GHS-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX-CXXImportStd.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-FindBinUtils.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/IAR-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /usr/share/cmake-4.2/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Intel-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/MSVC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/NVHPC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/OrangeC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/PGI-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/PathScale-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Renesas-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/SCO-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/TI-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/TIClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Tasking-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Watcom-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeDetermineLinkerId.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeInspectCXXLinker.cmake /usr/share/cmake-4.2/Modules/Internal/FeatureTesting.cmake /usr/share/cmake-4.2/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-Determine-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-4.2/Modules/Platform/Linux.cmake /usr/share/cmake-4.2/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.2.3/CMakeCXXCompiler.cmake CMakeFiles/4.2.3/CMakeSystem.cmake
+build build.ninja /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/build/cmake_install.cmake: RERUN_CMAKE | /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/CMakeLists.txt /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-4.2/Modules/Platform/Linux.cmake /usr/share/cmake-4.2/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.2.3/CMakeCXXCompiler.cmake CMakeFiles/4.2.3/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/CMakeLists.txt /usr/share/cmake-4.2/Modules/CMakeCXXCompiler.cmake.in /usr/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeCompilerIdDetection.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompiler.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineCompilerSupport.cmake /usr/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake /usr/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeNinjaFindMake.cmake /usr/share/cmake-4.2/Modules/CMakeParseImplicitIncludeInfo.cmake /usr/share/cmake-4.2/Modules/CMakeParseImplicitLinkInfo.cmake /usr/share/cmake-4.2/Modules/CMakeParseLibraryArchitecture.cmake /usr/share/cmake-4.2/Modules/CMakeSystem.cmake.in /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake /usr/share/cmake-4.2/Modules/CMakeTestCompilerCommon.cmake /usr/share/cmake-4.2/Modules/Compiler/ADSP-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/ARMCC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/ARMClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/AppleClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Borland-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/Clang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /usr/share/cmake-4.2/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Cray-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/CrayClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Diab-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/GHS-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX-CXXImportStd.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-FindBinUtils.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/IAR-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /usr/share/cmake-4.2/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Intel-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/MSVC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/NVHPC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/OrangeC-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/PGI-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/PathScale-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Renesas-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/SCO-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/TI-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/TIClang-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Tasking-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/Watcom-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeDetermineLinkerId.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeInspectCXXLinker.cmake /usr/share/cmake-4.2/Modules/Internal/FeatureTesting.cmake /usr/share/cmake-4.2/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-Determine-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-4.2/Modules/Platform/Linux.cmake /usr/share/cmake-4.2/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.2.3/CMakeCXXCompiler.cmake CMakeFiles/4.2.3/CMakeSystem.cmake: phony
+build /mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/CMakeLists.txt /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-4.2/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-4.2/Modules/Platform/Linux.cmake /usr/share/cmake-4.2/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.2.3/CMakeCXXCompiler.cmake CMakeFiles/4.2.3/CMakeSystem.cmake: phony
 
 
 #############################################

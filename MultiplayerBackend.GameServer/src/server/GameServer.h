@@ -2,7 +2,9 @@
 
 #include "../net/UniqueFd.h"
 #include "../net/tcp/TcpSocket.h"
+#include "../replication/InterestTracker.h"
 #include "../simulation/SimulationStep.h"
+#include "../simulation/WorldSimulation.h"
 #include "ClientConnection.h"
 
 #include <array>
@@ -24,7 +26,9 @@ namespace server
 
     private:
         static constexpr int MaxEvents = 64;
-        static constexpr std::size_t ReceiveBufferSize = 4096;
+
+        static constexpr std::size_t
+        ReceiveBufferSize = 4096;
 
         bool InitializeListener();
         bool InitializeEpoll();
@@ -36,7 +40,8 @@ namespace server
         AdvanceSimulationClock();
 
         simulation::GameTime
-        TimeAtTick(std::uint64_t tick) const;
+        TimeAtTick(
+            std::uint64_t tick) const;
 
         void Tick(
             const simulation::SimulationStep& step);
@@ -52,7 +57,8 @@ namespace server
             bool want_read,
             bool want_write);
 
-        void DisconnectClient(int fd);
+        void DisconnectClient(
+            int fd);
 
         std::uint16_t port_;
         std::uint32_t tick_rate_;
@@ -73,6 +79,20 @@ namespace server
             std::byte,
             ReceiveBufferSize> receive_buffer_{};
 
+        simulation::WorldSimulation
+            world_simulation_;
+
+        std::unordered_map<
+            simulation::EntityId,
+            replication::InterestTracker>
+            interest_by_observer_;
+
         std::uint64_t tick_count_ = 0;
+
+        bool rollback_demo_submitted_ =
+            false;
+
+        bool lifecycle_demo_submitted_ =
+            false;
     };
 }

@@ -452,21 +452,176 @@ namespace server
     void GameServer::Tick(
         const simulation::SimulationStep& step)
     {
-        const double delta_time =
-            step.DeltaSeconds();
+        constexpr simulation::EntityId
+            DemoPlayerId = 1;
 
-        // We will use this as soon as actual gameplay
-        // simulation is introduced.
-        (void)delta_time;
+        world_simulation_.Step(step);
 
-        // Temporary diagnostic output.
+        // =================================================
+        // TEMPORARY DEMO #1
         //
-        // At 12 Hz this prints once every 12 ticks.
+        // Late movement input.
+        // =================================================
+
+        if (!rollback_demo_submitted_ &&
+            step.end_time >=
+                std::chrono::seconds{2})
+        {
+            rollback_demo_submitted_ = true;
+
+            const auto late_input_time =
+                std::chrono::duration_cast<
+                    simulation::GameTime>(
+                        std::chrono::milliseconds{
+                            1550
+                        });
+
+            const auto* player_before =
+                world_simulation_
+                    .State()
+                    .FindPlayer(
+                        DemoPlayerId);
+
+            if (player_before == nullptr)
+            {
+                std::cerr
+                    << "Demo player not found\n";
+
+                return;
+            }
+
+            const double position_before =
+                player_before->position.x;
+
+            const bool accepted =
+                world_simulation_
+                    .SubmitMovementInput(
+                        simulation::MovementInput{
+                            .entity_id =
+                                DemoPlayerId,
+                            .sequence = 1,
+                            .direction =
+                                simulation::MoveDirection::
+                                    Backward
+                        },
+                        late_input_time);
+
+            if (!accepted)
+            {
+                std::cerr
+                    << "Rollback movement input was rejected\n";
+            }
+            else
+            {
+                const auto* player_after =
+                    world_simulation_
+                        .State()
+                        .FindPlayer(
+                            DemoPlayerId);
+
+                if (player_after == nullptr)
+                {
+                    std::cerr
+                        << "Demo player disappeared after rollback\n";
+
+                    return;
+                }
+
+                std::cout
+                    << "Late input: Player "
+                    << DemoPlayerId
+                    << " Backward @ 1.55s\n"
+                    << "Rollback position: "
+                    << position_before
+                    << " -> "
+                    << player_after->position.x
+                    << '\n';
+            }
+        }
+
+        // =================================================
+        // TEMPORARY DEMO #2
+        //
+        // At server time 3 seconds, pretend we only now
+        // learned that Player 5 actually spawned at 2.55s.
+        //
+        // This proves entity lifecycle is rollback-replayable.
+        // =================================================
+
+        if (!lifecycle_demo_submitted_ &&
+            step.end_time >=
+                std::chrono::seconds{3})
+        {
+            lifecycle_demo_submitted_ = true;
+
+            constexpr simulation::EntityId
+                LatePlayerId = 5;
+
+            const auto spawn_time =
+                std::chrono::duration_cast<
+                    simulation::GameTime>(
+                        std::chrono::milliseconds{
+                            2550
+                        });
+
+            const bool accepted =
+                world_simulation_
+                    .SchedulePlayerSpawn(
+                        LatePlayerId,
+                        simulation::Vec2{
+                            .x = 3.0,
+                            .y = 0.0
+                        },
+                        spawn_time);
+
+            if (!accepted)
+            {
+                std::cerr
+                    << "Rollback spawn event was rejected\n";
+            }
+            else
+            {
+                const auto* late_player =
+                    world_simulation_
+                        .State()
+                        .FindPlayer(
+                            LatePlayerId);
+
+                std::cout
+                    << "Late spawn: Player "
+                    << LatePlayerId
+                    << " @ 2.55s"
+                    << " | exists now="
+                    << (
+                        late_player != nullptr
+                            ? "yes"
+                            : "no"
+                    )
+                    << '\n';
+            }
+        }
+
+        // =================================================
+        // Diagnostics
+        // =================================================
+
         if (step.tick % tick_rate_ == 0)
         {
+            const auto* player =
+                world_simulation_
+                    .State()
+                    .FindPlayer(
+                        DemoPlayerId);
+
+            if (player == nullptr)
+            {
+                return;
+            }
+
             const double game_time_seconds =
                 std::chrono::duration<double>(
-                    step.end_time).count();
+                    step.end_time)
+                    .count();
 
             std::cout
                 << "Tick "
@@ -474,18 +629,96 @@ namespace server
                 << " | time="
                 << game_time_seconds
                 << "s"
+                << " | player="
+                << player->id
+                << " position=("
+                << player->position.x
+                << ", "
+                << player->position.y
+                << ")"
+                << " | entities="
+                << world_simulation_
+                       .State()
+                       .players
+                       .size()
                 << " | clients="
                 << clients_.size()
                 << '\n';
-        }
 
-        // Eventually this becomes roughly:
-        //
-        // ProcessInputs(step);
-        // SimulateWorld(step);
-        // ResolveCombat(step);
-        // SaveRollbackState(step);
-        // BuildSnapshots(step);
+            auto& interest_tracker =
+                interest_by_observer_[
+                    DemoPlayerId];
+
+            const replication::InterestDelta
+                interest_delta =
+                    interest_tracker.Update(
+                        world_simulation_
+                            .QueryNearbyEntities(
+                                DemoPlayerId,
+                                1));
+
+            std::cout
+                << "AOI Player "
+                << DemoPlayerId
+                << " | entered:";
+
+            if (interest_delta.entered.empty())
+            {
+                std::cout
+                    << " -";
+            }
+            else
+            {
+                for (const auto entity_id :
+                     interest_delta.entered)
+                {
+                    std::cout
+                        << ' '
+                        << entity_id;
+                }
+            }
+
+            std::cout
+                << " | stayed:";
+
+            if (interest_delta.stayed.empty())
+            {
+                std::cout
+                    << " -";
+            }
+            else
+            {
+                for (const auto entity_id :
+                     interest_delta.stayed)
+                {
+                    std::cout
+                        << ' '
+                        << entity_id;
+                }
+            }
+
+            std::cout
+                << " | left:";
+
+            if (interest_delta.left.empty())
+            {
+                std::cout
+                    << " -";
+            }
+            else
+            {
+                for (const auto entity_id :
+                     interest_delta.left)
+                {
+                    std::cout
+                        << ' '
+                        << entity_id;
+                }
+            }
+
+            std::cout
+                << '\n';
+        }
     }
 
     void GameServer::AcceptPendingClients()
