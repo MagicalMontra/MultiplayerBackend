@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

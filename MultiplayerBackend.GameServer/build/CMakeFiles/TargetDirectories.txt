@@ -1,0 +1,3 @@
+/mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/build/CMakeFiles/multiplayer_game_server.dir
+/mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/build/CMakeFiles/edit_cache.dir
+/mnt/d/Repositories/MultiplayerBackend/MultiplayerBackend.GameServer/build/CMakeFiles/rebuild_cache.dir
