@@ -135,7 +135,8 @@ public static class PlayerEndpoints
     private static async Task<IResult> UpdateMe(
         UpdatePlayerRequest request,
         ClaimsPrincipal user,
-        AppDbContext db)
+        AppDbContext db,
+        IDistributedCache cache)
     {
         var playerId = user.GetPlayerId();
 
@@ -166,6 +167,8 @@ public static class PlayerEndpoints
         player.Level = request.Level;
 
         await db.SaveChangesAsync();
+
+        await cache.RemoveAsync($"player:{playerId.Value}");
 
         return Results.Ok(new PlayerResponse(
             player.Id,
