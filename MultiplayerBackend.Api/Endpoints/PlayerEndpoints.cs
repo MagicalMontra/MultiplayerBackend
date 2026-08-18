@@ -43,7 +43,8 @@ public static class PlayerEndpoints
     private static async Task<IResult> GetMe(
         ClaimsPrincipal user,
         AppDbContext db,
-        IDistributedCache cache)
+        IDistributedCache cache,
+        ILoggerFactory loggerFactory)
     {
         var playerId = user.GetPlayerId();
 
@@ -52,6 +53,7 @@ public static class PlayerEndpoints
             return Results.Unauthorized();
         }
 
+        var logger = loggerFactory.CreateLogger("PlayerEndpoints");
         var cacheKey = $"player:{playerId.Value}";
 
         // 1. Try Redis first
@@ -59,7 +61,9 @@ public static class PlayerEndpoints
 
         if (cachedPlayer is not null)
         {
-            Console.WriteLine("CACHE HIT");
+            logger.LogDebug(
+                "Player cache hit for player {PlayerId}",
+                playerId.Value);
 
             var response =
                 JsonSerializer.Deserialize<PlayerResponse>(cachedPlayer);
@@ -67,7 +71,9 @@ public static class PlayerEndpoints
             return Results.Ok(response);
         }
 
-        Console.WriteLine("CACHE MISS");
+        logger.LogDebug(
+            "Player cache miss for player {PlayerId}",
+            playerId.Value);
 
         // 2. Redis didn't have it, query PostgreSQL
         var player = await db.Players
