@@ -46,7 +46,7 @@ The data model includes database constraints and indexes for values that need to
 
 Inventory rows use optimistic concurrency through an EF Core row-version property backed by PostgreSQL. Item transfers return a conflict result if another write changes the inventory during the operation rather than silently overwriting concurrent state.
 
-### Redis cache-aside player reads
+### Redis cache-aside player reads and write invalidation
 
 `GET /api/players/me` uses Redis as a distributed cache in front of PostgreSQL:
 
@@ -55,7 +55,9 @@ Inventory rows use optimistic concurrency through an EF Core row-version propert
 3. Store the response in Redis with a bounded TTL.
 4. Return the player data.
 
-This keeps cache state outside the API process so it can be shared by multiple application instances.
+After `PUT /api/players/me` successfully persists the updated player to PostgreSQL, the corresponding Redis cache entry is removed so the next read repopulates the cache from authoritative database state.
+
+This keeps cache state outside the API process so it can be shared by multiple application instances while preventing successful profile updates from leaving stale cached responses behind.
 
 ### Atomic Redis login queue
 
@@ -90,7 +92,7 @@ The integration-test project uses xUnit, `WebApplicationFactory`, and Testcontai
 
 The test fixture starts disposable PostgreSQL and Redis containers, replaces the application's normal database/cache registrations with the container connection strings, applies EF Core migrations, and resets persistent state between tests.
 
-Current integration coverage includes inventory transfers and login-queue behavior.
+Current integration coverage includes inventory transfers, login-queue behavior, and player-cache invalidation after profile updates.
 
 ## API overview
 
@@ -108,8 +110,6 @@ Current integration coverage includes inventory transfers and login-queue behavi
 | Login queue | `DELETE /api/login-queue/leave` | JWT |
 | Health | `GET /health/live` | No |
 | Health | `GET /health/ready` | No |
-
-The project also contains temporary development player-management endpoints used while building and testing the API.
 
 ## Technology
 
